@@ -1,1 +1,3 @@
-# Galvanize-Capstone-1
+# Galvanize Capstone 1
+
+## EDA
