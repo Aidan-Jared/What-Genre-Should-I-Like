@@ -44,7 +44,7 @@ if __name__ == '__main__':
     df_book_tags = pd.read_csv('data/book_tags.csv')
     df_ratings = pd.read_csv('data/ratings.csv')
     df_tags = pd.read_csv('data/tags.csv')
-    
+
     #selecting only the books with the eng lang code
     df_books = lang_select(df_books, 'eng')
 
