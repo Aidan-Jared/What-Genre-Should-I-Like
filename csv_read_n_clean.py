@@ -56,4 +56,5 @@ if __name__ == '__main__':
     df_fantasy = isolate_tag(df_rating_tags, 'fantasy', 4)
     df_scifi = isolate_tag(df_rating_tags, 'sci-fi', 4)
 
-    Beta(df_fantasy, df_scifi, 'user_rating').Beta.compile_analysis()
+    Beta.Beta(df_fantasy, df_scifi, 'user_rating').compile_analysis()
+    plt.show()

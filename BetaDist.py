@@ -72,8 +72,8 @@ class Beta(object):
         ax.plot(x, stats.beta.pdf(x, df1_a, df1_b),'r-', lw=5, alpha=0.6, label='beta pdf')
         ax2.plot(x, stats.beta.pdf(x, df2_a, df2_b),'r-', lw=5, alpha=0.6, label='beta pdf')
 
-        ax.hist(df1_avg[tag], bins = 15, rwidth = 0.75, density = True)
-        ax2.hist(df2_avg[tag], bins = 15, rwidth = 0.75, density = True)
+        ax.hist(df1_avg[tag], bins = 15, rwidth = 0.75)
+        ax2.hist(df2_avg[tag], bins = 15, rwidth = 0.75)
 
         ax.set_ylabel('P({self.tag} = x)')
         ax.set_xlabel('x')
@@ -90,7 +90,7 @@ class Beta(object):
         # bx.set_xlabel()
         # bx.set_title('Vine reviews - ' + tag.replace('_', ' '))
 
-    def compile_analysis(self, df1, df2, tag):
+    def compile_analysis(self):
         '''
         INPUT: dataframe, dataframe, string
         OUTPUT: float
