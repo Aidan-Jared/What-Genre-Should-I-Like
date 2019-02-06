@@ -17,25 +17,25 @@ class Beta(object):
         self.df2 = df2
         self.tag = tag
     
-    def avg_metric_by_product(self, df1, tag):
+    def avg_metric_by_product(self, df, tag):
         '''
         INPUT: dataframe, string
         OUTPUT: dataframe
         Groups dataframe by user id and averages each product over the given
         tag
         '''
-        return self.df1.groupby('user_id').mean()[self.tag].reset_index()
+        return df.groupby('user_id').mean()[self.tag].reset_index()
 
-    def get_beta_params(self, df1, tag):
+    def get_beta_params(self, df, tag):
         '''
         INPUT: dataframe, string
         OUTPUT: float, float
         Calculates alpha and beta for beta distribution using the mean and standard
         deviation
         '''
-        self.df1[self.tag] = self.df1[self.tag]/self.df1[self.tag].max()
-        mu = np.mean(self.df1.loc[:,self.tag])
-        sd = np.std(self.df1.loc[:,self.tag])
+        df[self.tag] = df[self.tag]/df[self.tag].max()
+        mu = np.mean(df.loc[:,self.tag])
+        sd = np.std(df.loc[:,self.tag])
         alpha = (((1 - mu )/sd**2) - (1/mu)) * mu**2
         beta = alpha * ((1 / mu) - 1)
         return(alpha, beta)
@@ -105,4 +105,4 @@ class Beta(object):
         df2_a, df2_b = self.get_beta_params(df2_avgs, self.tag)
 
         probability = self.beta_test(df1_a, df2_a, df1_b, df2_b)*100
-        return(self.beta_test(df1_a, df2_a, df1_b, df2_b), probability)
+        return probability
