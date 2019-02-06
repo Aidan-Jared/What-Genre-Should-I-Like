@@ -21,6 +21,21 @@ def merge_df(leftDF, rightDF, leftJoin, rightJoin):
     '''
     return leftDF.merge(rightDF, left_on=leftJoin, right_on=rightJoin)
 
+def isolate_tag(df, tag, books_read):
+    '''
+    input: dataframe, string, int
+    output: dataframe
+    selects only the books from the tag and users if they read more than the min books_read
+    '''
+    mask = df['tag_name'] == tag
+    df_new = df[mask]
+    test = df_new[['user_id','rating']].groupby(['user_id']).count()
+    df_new = df_new.merge(test, left_on='user_id', right_on='user_id')
+    df_new = df_new.rename(index=str, columns = {"rating_x": 'user_rating' , 'rating_y':'books_read'})
+    mask2 = df_new['books_read'] >= books_read
+    df_new = df_new[mask2]
+    return df_new
+
 
 if __name__ == '__main__':
     #importing in the csv
