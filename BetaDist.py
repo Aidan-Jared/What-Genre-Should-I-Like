@@ -75,9 +75,9 @@ class Beta(object):
         ax.hist(df1_avg[tag], bins = 15, rwidth = 0.75, density = True)
         ax2.hist(df2_avg[tag], bins = 15, rwidth = 0.75, density = True)
 
-        ax.set_ylabel(f'P({self.tag} = x)')
+        ax.set_ylabel('P({self.tag} = x)')
         ax.set_xlabel('x')
-        ax2.set_ylabel(f'P({self.tag} = x)')
+        ax2.set_ylabel('P({self.tag} = x)')
         ax2.set_xlabel('x')
         ax.set_title('{self.df1.iloc[0,0]} Beta Function')
         ax2.set_title('{self.df2.iloc[0,0]} Beta Function')

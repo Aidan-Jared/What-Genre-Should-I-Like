@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
+import BetaDist as Beta
 import matplotlib.pyplot as plt
 
 
@@ -30,7 +31,7 @@ def isolate_tag(df, tag, books_read):
     mask = df['tag_name'] == tag
     df_new = df[mask]
     test = df_new[['user_id','rating']].groupby(['user_id']).count()
-    df_new = df_new.merge(test, left_on='user_id', right_on='user_id')
+    df_new = df_new.merge(test, left_on='user_id', right_index=True)
     df_new = df_new.rename(index=str, columns = {"rating_x": 'user_rating' , 'rating_y':'books_read'})
     mask2 = df_new['books_read'] >= books_read
     df_new = df_new[mask2]
@@ -51,3 +52,8 @@ if __name__ == '__main__':
     df_tags_books = merge_df(df_book_tags, df_tags, 'tag_id', 'tag_id')
     df_rating_tags = merge_df(df_tags_books, df_ratings, 'goodreads_book_id', 'book_id')
     
+    #Creating the first 2 data frames to compare
+    df_fantasy = isolate_tag(df_rating_tags, 'fantasy', 4)
+    df_scifi = isolate_tag(df_rating_tags, 'sci-fi', 4)
+
+    Beta(df_fantasy, df_scifi, 'user_rating').Beta.compile_analysis()
