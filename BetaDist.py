@@ -64,6 +64,7 @@ class Beta(object):
         df1_a, df1_b = self.get_beta_params(df1_avg, self.tag)
         df2_a, df2_b = self.get_beta_params(df2_avg, self.tag)
 
+        #setting up plot figure
         fig = plt.figure(figsize=(16, 16))
         gs = gridspec.GridSpec(2,2)
         ax = fig.add_subplot(gs[:,0])
@@ -72,16 +73,25 @@ class Beta(object):
 
         x = np.linspace(0, 1, 100)
 
-        ax.plot(x, stats.beta.pdf(x, df1_a, df1_b),'r-', lw=5, alpha=0.7, label=df1_name)
-        ax.plot(x, stats.beta.pdf(x, df2_a, df2_b),'b-', lw=5, alpha=0.7, label=df2_name)
+        #plotting function
+        ax.plot(x, stats.beta.pdf(x, df1_a, df1_b),'r-', lw=5, alpha=0.7, label="{0} readers ratings of {1}".format(df1_name, df2_name))
+        ax.plot(x, stats.beta.pdf(x, df2_a, df2_b),'b-', lw=5, alpha=0.7, label="{0} readers ratings of {1}".format(df2_name, df1_name))
         ax.legend()
 
         ax1.hist(df1_avg[tag], color='y', bins = 15, rwidth = 0.75, density=True, label= df1_name + " User Raitings")
         ax2.hist(df2_avg[tag], color = 'g',bins = 15, rwidth = 0.75, density=True, label= df2_name + " User Raitings")
 
+        
+        #formating
         ax.set_ylabel('P(user_rating) = x)')
         ax.set_xlabel('x')
         ax.set_title('{0} avg rating vs {1} avg rating Beta Function'.format(df1_name, df2_name))
+        ax1.set_ylabel("P(user_rating) = x")
+        ax1.set_xlabel("x")
+        ax1.set_title("{0} readers ratings of {1}".format(df1_name, df2_name))
+        ax2.set_ylabel("P(user_rating) = x")
+        ax2.set_xlabel("x")
+        ax1.set_title("{0} readers ratings of {1}".format(df2_name, df1_name))
         ax1.legend()
         ax2.legend()
 
