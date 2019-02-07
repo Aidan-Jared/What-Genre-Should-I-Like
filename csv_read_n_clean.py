@@ -57,6 +57,6 @@ if __name__ == '__main__':
     df_scifi = isolate_tag(df_rating_tags, 'sci-fi', 4)
 
     #setting up Beta distributions and plots
-    x = Beta.Beta(df_fantasy, df_scifi, 'user_rating').compile_analysis()
+    x = Beta.Beta(df_fantasy, df_scifi, 'user_rating').compile_analysis('Fantasy', 'Sci-Fi')
     plt.show()
     print(x)
