@@ -61,6 +61,6 @@ if __name__ == '__main__':
     plt.show()
     print(x)
 
-    df_historyM = isolate_tag(df_rating_tags, "history-mystery", 4)
-    y = Beta.Beta(df_historyM, df_fantasy, 'user_rating').compile_analysis('HistoryM', 'Fantasy')
+    y = Beta.Beta(df_historyH, df_fantasy, 'user_rating').compile_analysis('HistoryH', 'fantasy')
+    print(y)
     plt.show()
