@@ -60,3 +60,7 @@ if __name__ == '__main__':
     x = Beta.Beta(df_fantasy, df_scifi, 'user_rating').compile_analysis('Fantasy', 'Sci-Fi')
     plt.show()
     print(x)
+
+    df_historyM = isolate_tag(df_rating_tags, "history-mystery", 4)
+    y = Beta.Beta(df_historyM, df_fantasy, 'user_rating').compile_analysis('HistoryM', 'Fantasy')
+    plt.show()

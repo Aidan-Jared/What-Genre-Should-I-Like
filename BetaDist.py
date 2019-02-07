@@ -91,7 +91,7 @@ class Beta(object):
         ax1.set_title("{0} readers ratings of {1}".format(df1_name, df2_name))
         ax2.set_ylabel("P(user_rating) = x")
         ax2.set_xlabel("x")
-        ax1.set_title("{0} readers ratings of {1}".format(df2_name, df1_name))
+        ax2.set_title("{0} readers ratings of {1}".format(df2_name, df1_name))
         ax1.legend()
         ax2.legend()
 
