@@ -2,6 +2,7 @@ import scipy.stats as stats
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 from typing import List, Optional
 
 class Beta(object):
@@ -64,20 +65,25 @@ class Beta(object):
         df2_a, df2_b = self.get_beta_params(df2_avg, self.tag)
 
         fig = plt.figure(figsize=(16, 16))
-        ax = fig.add_subplot(121)
+        gs = gridspec.GridSpec(2,2)
+        ax = fig.add_subplot(gs[:,0])
+        ax1 = fig.add_subplot(gs[0,1])
+        ax2 = fig.add_subplot(gs[1,1])
 
         x = np.linspace(0, 1, 100)
 
-        ax.plot(x, stats.beta.pdf(x, df1_a, df1_b),'r-', lw=5, alpha=0.6, label=df1_name)
-        ax.plot(x, stats.beta.pdf(x, df2_a, df2_b),'g-', lw=5, alpha=0.6, label=df2_name)
+        ax.plot(x, stats.beta.pdf(x, df1_a, df1_b),'r-', lw=5, alpha=0.7, label=df1_name)
+        ax.plot(x, stats.beta.pdf(x, df2_a, df2_b),'b-', lw=5, alpha=0.7, label=df2_name)
+        ax.legend()
 
-        ax.hist(df1_avg[tag], color='r', bins = 15, rwidth = 0.75, density=True, label= df1_name + " histogram")
-        ax.hist(df2_avg[tag], color = 'g',bins = 15, rwidth = 0.75, density=True, label= df2_name + " histogram")
+        ax1.hist(df1_avg[tag], color='y', bins = 15, rwidth = 0.75, density=True, label= df1_name + " User Raitings")
+        ax2.hist(df2_avg[tag], color = 'g',bins = 15, rwidth = 0.75, density=True, label= df2_name + " User Raitings")
 
         ax.set_ylabel('P(user_rating) = x)')
         ax.set_xlabel('x')
         ax.set_title('{0} avg rating vs {1} avg rating Beta Function'.format(df1_name, df2_name))
-        plt.legend()
+        ax1.legend()
+        ax2.legend()
 
 
     def dfMerge(self, df1, df2, leftjoin = 'user_id', rightjoin = 'user_id', compile_A = True):
