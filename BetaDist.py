@@ -80,15 +80,18 @@ class Beta(object):
         plt.legend()
 
 
-    def dfMerge(self, df1, df2):
+    def dfMerge(self, df1, df2, leftjoin = 'user_id', rightjoin = 'user_id', compile_A = True):
         '''
-        Input: dataframe, dataframe
+        Input: dataframe, dataframe, string, string
         Output: dataframe
         merges the two dataframes on userid
         '''
-        df1_m_df2 = self.df1[['user_id','tag_name']].merge(self.df2, left_on='user_id', right_on='user_id')
-        df2_m_df1 = self.df2[['user_id','tag_name']].merge(self.df1, left_on='user_id', right_on='user_id')
-        return df1_m_df2, df2_m_df1
+        if compile_A == True:
+            df1_m_df2 = self.df1[['user_id','tag_name']].merge(self.df2, left_on=leftjoin, right_on=rightjoin)
+            df2_m_df1 = self.df2[['user_id','tag_name']].merge(self.df1, left_on='user_id', right_on='user_id')
+            return df1_m_df2, df2_m_df1
+        elif compile_A == False:
+            return self.df1.merge(self.df2, left_on=leftjoin, right_on=rightjoin)
     
     def compile_analysis(self, df1_name, df2_name):
         '''
