@@ -9,7 +9,7 @@ class Beta(object):
     '''
     object for doing quick beta functions
     '''
-    def __init__(self, df1, df2, tag):
+    def __init__(self, df1, df2, tag = ''):
         '''
         df1: dataframe of one tag type
         df2: dataframe of another tag type
@@ -96,7 +96,7 @@ class Beta(object):
         ax2.legend()
 
 
-    def dfMerge(self, df1, df2, leftjoin = 'user_id', rightjoin = 'user_id', compile_A = True):
+    def dfMerge(self, leftjoin = 'user_id', rightjoin = 'user_id', compile_A = True):
         '''
         Input: dataframe, dataframe, string, string
         Output: dataframe
@@ -115,7 +115,7 @@ class Beta(object):
         OUTPUT: float
         Calls above functions and returns results of hypothesis test.
         '''
-        df1_m_df2, df2_m_df1 = self.dfMerge(self.df1, self.df2)
+        df1_m_df2, df2_m_df1 = self.dfMerge()
 
         df1_avgs = self.avg_rating_by_user(df1_m_df2, self.tag)
         df2_avgs = self.avg_rating_by_user(df2_m_df1, self.tag)

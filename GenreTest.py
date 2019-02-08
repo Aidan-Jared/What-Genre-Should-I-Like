@@ -14,14 +14,6 @@ def lang_select(df, lang):
     mask = df['language_code'] == lang
     return df[mask]
 
-def merge_df(leftDF, rightDF, leftJoin, rightJoin):
-    '''
-    input: dataframe, dataframe, string, string
-    output: dataframe
-    merges the leftDF and rightDf on the leftJoin and rightJon
-    '''
-    return leftDF.merge(rightDF, left_on=leftJoin, right_on=rightJoin)
-
 def isolate_tag(df, tag, books_read):
     '''
     input: dataframe, string, int
@@ -49,8 +41,8 @@ if __name__ == '__main__':
     df_books = lang_select(df_books, 'eng')
 
     #merging dataframes
-    df_tags_books = merge_df(df_book_tags, df_tags, 'tag_id', 'tag_id')
-    df_rating_tags = merge_df(df_tags_books, df_ratings, 'goodreads_book_id', 'book_id')
+    df_tags_books = Beta.Beta(df_book_tags, df_tags).dfMerge('tag_id', 'tag_id', compile_A=False)
+    df_rating_tags = Beta.Beta(df_tags_books, df_ratings).dfMerge('goodreads_book_id', 'book_id', compile_A=False)
     
     #Creating the first 2 data frames to compare
     df_fantasy = isolate_tag(df_rating_tags, 'fantasy', 4)
