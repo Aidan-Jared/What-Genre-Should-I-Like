@@ -20,7 +20,8 @@ def isolate_tag(df, tag, books_read):
     output: dataframe
     selects only the books from the tag and users if they read more than the min books_read
     '''
-    mask = df['tag_name'] == tag
+    #need to change this area
+    mask = df['tag_name'].str.contains(tag)
     df_new = df[mask]
     test = df_new[['user_id','rating']].groupby(['user_id']).count()
     df_new = df_new.merge(test, left_on='user_id', right_index=True)
@@ -49,10 +50,10 @@ if __name__ == '__main__':
     df_scifi = isolate_tag(df_rating_tags, 'sci-fi', 4)
 
     #setting up Beta distributions and plots
-    x = Beta.Beta(df_fantasy, df_scifi, 'user_rating').compile_analysis('Fantasy', 'Sci-Fi')
+    fantasy_scifi = Beta.Beta(df_fantasy, df_scifi, 'user_rating').compile_analysis('Fantasy', 'Sci-Fi')
     plt.show()
-    print(x)
+    print(fantasy_scifi)
 
-    y = Beta.Beta(df_historyH, df_fantasy, 'user_rating').compile_analysis('HistoryH', 'fantasy')
-    print(y)
-    plt.show()
+    # y = Beta.Beta(df_historyH, df_fantasy, 'user_rating').compile_analysis('HistoryH', 'fantasy')
+    # print(y)
+    # plt.show()
