@@ -14,15 +14,18 @@ def lang_select(df, lang):
     mask = df['language_code'] == lang
     return df[mask]
 
-def isolate_tag(df, tag, books_read):
+def isolate_tag(df, tag, exculude, books_read):
     '''
-    input: dataframe, string, int
+    input: dataframe, string, list, int
     output: dataframe
     selects only the books from the tag and users if they read more than the min books_read
     '''
     #need to change this area
     mask = df['tag_name'].str.contains(tag)
     df_new = df[mask]
+    # for i in exculude:
+    #     mask = df['tag_name'].str.contains(i)
+    #     df_new = df[~mask]
     test = df_new[['user_id','rating']].groupby(['user_id']).count()
     df_new = df_new.merge(test, left_on='user_id', right_index=True)
     df_new = df_new.rename(index=str, columns = {"rating_x": 'user_rating' , 'rating_y':'books_read'})
@@ -46,14 +49,10 @@ if __name__ == '__main__':
     df_rating_tags = Beta.Beta(df_tags_books, df_ratings).dfMerge('goodreads_book_id', 'book_id', compile_A=False)
     
     #Creating the first 2 data frames to compare
-    df_fantasy = isolate_tag(df_rating_tags, 'fantasy', 4)
-    df_scifi = isolate_tag(df_rating_tags, 'sci-fi', 4)
+    df_fantasy = isolate_tag(df_rating_tags, 'fantasy', ['to-read','literature','sci-fi'],4)
+    df_lit = isolate_tag(df_rating_tags, 'literature', ['to-read','fantasy'], 4)
 
     #setting up Beta distributions and plots
-    fantasy_scifi = Beta.Beta(df_fantasy, df_scifi, 'user_rating').compile_analysis('Fantasy', 'Sci-Fi')
+    fantasy_scifi = Beta.Beta(df_fantasy, df_lit, 'user_rating').compile_analysis('Fantasy', 'literature')
     plt.show()
     print(fantasy_scifi)
-
-    # y = Beta.Beta(df_historyH, df_fantasy, 'user_rating').compile_analysis('HistoryH', 'fantasy')
-    # print(y)
-    # plt.show()

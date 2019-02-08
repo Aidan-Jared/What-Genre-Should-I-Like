@@ -78,8 +78,8 @@ class Beta(object):
         ax.plot(x, stats.beta.pdf(x, df2_a, df2_b),'b-', lw=5, alpha=0.7, label="{0} readers ratings of {1}".format(df2_name, df1_name))
         ax.legend()
 
-        ax1.hist(df1_avg[tag], color='y', bins = 15, rwidth = 0.75, density=True, label= df1_name + " User Raitings")
-        ax2.hist(df2_avg[tag], color = 'g',bins = 15, rwidth = 0.75, density=True, label= df2_name + " User Raitings")
+        ax1.hist(df1_avg[tag], color='y', bins = 20, rwidth = 0.75, label= df1_name + " User Raitings")
+        ax2.hist(df2_avg[tag], color = 'g',bins = 20, rwidth = 0.75, label= df2_name + " User Raitings")
 
         
         #formating
@@ -103,7 +103,7 @@ class Beta(object):
         merges the two dataframes on userid
         '''
         if compile_A == True:
-            df1_m_df2 = self.df1[['user_id','tag_name']].merge(self.df2, left_on=leftjoin, right_on=rightjoin)
+            df1_m_df2 = self.df1[['user_id','tag_name']].merge(self.df2, left_on='user_id', right_on='user_id')
             df2_m_df1 = self.df2[['user_id','tag_name']].merge(self.df1, left_on='user_id', right_on='user_id')
             return df1_m_df2, df2_m_df1
         elif compile_A == False:
