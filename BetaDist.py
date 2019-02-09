@@ -74,12 +74,12 @@ class Beta(object):
         x = np.linspace(0, 1, 100)
 
         #plotting function
-        ax.plot(x, stats.beta.pdf(x, df1_a, df1_b),'r-', lw=5, alpha=0.7, label="{0} readers ratings of {1}".format(df1_name, df2_name))
-        ax.plot(x, stats.beta.pdf(x, df2_a, df2_b),'b-', lw=5, alpha=0.7, label="{0} readers ratings of {1}".format(df2_name, df1_name))
+        ax.plot(5*x, stats.beta.pdf(x, df1_a, df1_b),'r-', lw=5, alpha=0.7, label="{0} readers ratings of {1}".format(df1_name, df2_name))
+        ax.plot(5*x, stats.beta.pdf(x, df2_a, df2_b),'b-', lw=5, alpha=0.7, label="{0} readers ratings of {1}".format(df2_name, df1_name))
         ax.legend()
 
-        ax1.hist(df1_avg[tag], color='y', bins = 20, rwidth = 0.75, label= df1_name + " User Raitings")
-        ax2.hist(df2_avg[tag], color = 'g',bins = 20, rwidth = 0.75, label= df2_name + " User Raitings")
+        ax1.hist(5 * df1_avg[tag], color='y', bins = 20, rwidth = 0.75, label= "Mean User Raitings")
+        ax2.hist(5 * df2_avg[tag], color = 'g',bins = 20, rwidth = 0.75, label= "Mean User Raitings")
 
         
         #formating

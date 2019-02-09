@@ -23,9 +23,9 @@ def isolate_tag(df, tag, exculude, books_read):
     #need to change this area
     mask = df['tag_name'].str.contains(tag)
     df_new = df[mask]
-    # for i in exculude:
-    #     mask = df['tag_name'].str.contains(i)
-    #     df_new = df[~mask]
+    for i in exculude:
+        mask = df['tag_name'].str.contains(i)
+        df_new = df_new[~mask]
     test = df_new[['user_id','rating']].groupby(['user_id']).count()
     df_new = df_new.merge(test, left_on='user_id', right_index=True)
     df_new = df_new.rename(index=str, columns = {"rating_x": 'user_rating' , 'rating_y':'books_read'})
@@ -53,6 +53,11 @@ if __name__ == '__main__':
     df_lit = isolate_tag(df_rating_tags, 'literature', ['to-read','fantasy'], 4)
 
     #setting up Beta distributions and plots
-    fantasy_scifi = Beta.Beta(df_fantasy, df_lit, 'user_rating').compile_analysis('Fantasy', 'literature')
+    fantasy_lit = Beta.Beta(df_fantasy, df_lit, 'user_rating').compile_analysis('Fantasy', 'Literature')
     plt.show()
-    print(fantasy_scifi)
+    print(fantasy_lit)
+
+    df_hist = isolate_tag(df_rating_tags, 'history', ['to-read','fantasy', 'fiction','sci-fi'], 4)
+    lit_hist = Beta.Beta(df_lit, df_hist, 'user_rating').compile_analysis('Literature','History')
+    plt.show()
+    print(fantasy_lit)
