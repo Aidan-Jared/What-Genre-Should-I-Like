@@ -3,6 +3,7 @@ import pandas as pd
 import scipy.stats as stats
 import BetaDist as Beta
 import matplotlib.pyplot as plt
+from itertools import combinations
 
 
 def langSelect(df, lang):
@@ -83,3 +84,6 @@ if __name__ == '__main__':
     sci_relig = Beta.Beta(df_sci, df_relig, 'user_rating').compile_analysis('Science','Religion', Plot=True)
     plt.show()
     print(sci_relig)
+
+    #creat combinations of top 10 tags
+    tag_comb = combinations(tag_10, 2)
