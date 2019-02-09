@@ -109,7 +109,7 @@ class Beta(object):
         elif compile_A == False:
             return self.df1.merge(self.df2, left_on=leftjoin, right_on=rightjoin)
     
-    def compile_analysis(self, df1_name, df2_name):
+    def compile_analysis(self, df1_name='', df2_name='', Plot = False):
         '''
         INPUT: dataframe, dataframe, string
         OUTPUT: float
@@ -120,7 +120,8 @@ class Beta(object):
         df1_avgs = self.avg_rating_by_user(df1_m_df2, self.tag)
         df2_avgs = self.avg_rating_by_user(df2_m_df1, self.tag)
 
-        self.plot_distribution(df1_avgs, df2_avgs, self.tag, df1_name, df2_name)
+        if Plot == True:
+            self.plot_distribution(df1_avgs, df2_avgs, self.tag, df1_name, df2_name)
 
         df1_a, df1_b = self.get_beta_params(df1_avgs, self.tag)
         df2_a, df2_b = self.get_beta_params(df2_avgs, self.tag)
