@@ -19,7 +19,7 @@ def dataClean(df):
     '''
     input: dataframe
     output: dataframe
-    removes tags from dataframe 
+    removes common tags from dataframe 
     '''
     for i in ['read', 'book', 'favorite', 'own', 'audio', 'wish-list', '--', 'library','buy','kindle','finish','have','audi','borrowed','favourites','default']:
         mask1 = df['tag_name'].str.contains(i)
@@ -45,6 +45,21 @@ def isolate_tag(df, tag, exculude, books_read):
     df_new = df_new[mask2]
     return df_new
 
+def massCompare(tag_comb):
+        res = []
+        for i in tag_comb:
+            df1 = isolate_tag(df_rating_tags, i[0], [], 4)
+            df2 = isolate_tag(df_rating_tags, i[1], [], 4)
+            tags = Beta.Beta(df1, df2, 'user_rating').compile_analysis(i[0],i[1], Plot=False)
+            res.append(tags)
+        return res
+
+def massTagComb(df, num_tag):
+        df_user = df[["tag_name","user_id", 'rating']].sort_values(by=['tag_name','user_id'])
+        tag_10 = df_user['tag_name'].value_counts().reset_index()
+        tag_10 = tag_10.iloc[:num_tag,0]
+        tag_comb = combinations(tag_10, 2)
+        return tag_comb
 
 if __name__ == '__main__':
     #importing in the csv
@@ -73,10 +88,10 @@ if __name__ == '__main__':
     print(fantasy_lit)
 
     #history vs literature
-    df_hist = isolate_tag(df_rating_tags, 'history', ['to-read','fantasy', 'fiction','sci-fi'], 4)
+    df_hist = isolate_tag(df_rating_tags, 'history', ['to-read','fantasy', 'fiction','sci-fi', 'literature'], 4)
     lit_hist = Beta.Beta(df_lit, df_hist, 'user_rating').compile_analysis('Literature','History', Plot=True)
     plt.show()
-    print(lit_hist)
+    print(lit_hist), 
 
     #science vs relgion
     df_sci = isolate_tag(df_rating_tags, 'science', ['to-read','fantasy', 'fiction','sci-fi'], 4)
@@ -85,5 +100,6 @@ if __name__ == '__main__':
     plt.show()
     print(sci_relig)
 
-    #creat combinations of top 10 tags
-    tag_comb = combinations(tag_10, 2)
+    #create and test combinations of top 10 tags
+    tag_comb = massTagComb(df_rating_tags,10)
+    print(massCompare(tag_comb))

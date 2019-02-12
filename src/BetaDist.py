@@ -65,7 +65,7 @@ class Beta(object):
         df2_a, df2_b = self.get_beta_params(df2_avg, self.tag)
 
         #setting up plot figure
-        fig = plt.figure(figsize=(16, 16))
+        fig = plt.figure(figsize=(5,5))
         gs = gridspec.GridSpec(2,2)
         ax = fig.add_subplot(gs[:,0])
         ax1 = fig.add_subplot(gs[0,1])
@@ -94,6 +94,7 @@ class Beta(object):
         ax2.set_title("{0} readers ratings of {1}".format(df2_name, df1_name))
         ax1.legend()
         ax2.legend()
+        fig.savefig('images/fig_{}'.format(df1_name))
 
 
     def dfMerge(self, leftjoin = 'user_id', rightjoin = 'user_id', compile_A = True):
