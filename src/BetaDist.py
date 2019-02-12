@@ -56,7 +56,7 @@ class Beta(object):
         df2_a, df2_b = self.get_beta_params(df2_avg, self.tag)
 
         #setting up plot figure
-        fig = plt.figure(figsize=(5,5))
+        fig = plt.figure(figsize=(8,8))
         gs = gridspec.GridSpec(2,2)
         ax = fig.add_subplot(gs[:,0])
         ax1 = fig.add_subplot(gs[0,1])

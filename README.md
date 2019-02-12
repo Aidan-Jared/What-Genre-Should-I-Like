@@ -16,7 +16,35 @@
 
 For this poject I decided to look at book genres and the "bleeding" between genres (the enjoyment of one genre given the enjoyment of another genre). The Goodreads 10k book dataset from kaggle seemed perfect because it countained 10k books, user reviews and user given tags. The data sets was made of four csv files, books, book_tags, ratings, and tags. My end plan is to be able to predict the raitings that someone might give any genre given their enjoyment of one genre. 
 
-My first step was to figure out the structure of the data and how to manipulate it so that I could combine user ID's and tags. Through pandas merge I mangaged to make the dataframe df_rating_tags which was made up of each book_id, the tag_id and name, user_id and the user rating. This data frame became my central dataframe from which I made all other dataframes
+My first step was to fiugre out how to put all of the data together so I could search through the data frame. The main problem though is the identifyer I am using are the user generated tags. (tag csv file) When just loading up theses tags, the first thing I noticed was that the majority of the tags are worthless such as to-read, favorite, --31-, and some tags writen in japanese. To deal with this I just did a quick visual search and made a function that removed the most common words I did not care about and would have messed with my analysis.
+```python
+def dataClean(df):
+    for i in ['read', 'book', 'favorite', 'own', 'audio', 'wish-list', '--', 
+    'library','buy','kindle','finish','have','audi','borrowed',
+    'favourites','default']:
+        mask1 = df['tag_name'].str.contains(i)
+        df= df[~mask1]
+    return df
+```
+
+After this I needed to find out how group the tags, books, and users so I could select specific genres and mean users reviews. My solution was to join the book_tags, and tag dataframes so that I would have tag names tied with book_ids. I then put this dataframe through my cleaning function and removed all repeate values so that I would only have one instance of every book and the tag that most people games this book. Then end result looked soemthing like this:
+
+| Genre        | Books in Genre           |
+| ------------- |:-------------:|
+|fiction            |      1639|
+|fantasy            |      1104|
+|young-adult        |       695|
+|mystery            |       640|
+|non-fiction        |       597|
+|romance            |       464|
+|historical-fiction |       428|
+|classics           |       419|
+|childrens          |       294|
+|science-fiction    |       269|
+|horror             |       201|
+|graphic-novels     |       180|
+
+After finishing all this up it was off to the races.
 
 ## Baysian A/B testing
 
@@ -31,14 +59,14 @@ Fantasy tended to only raited literture higher than literature raited fantasy 48
 ### Literature and History
 
 I then compared were literature and history.
-![alt text](images/fig_Literature.png)
+![alt text](images/fig_Fiction.png)
 This seems very simular to 51%
 
 
 ### Science and Religion
 
 I then compared were science and religion.
-![alt text](images/fig_Science.png)
+![alt text](images/fig_Science-Fiction.png)
 These results suprised me 49%
 
 ### Top 10 tags

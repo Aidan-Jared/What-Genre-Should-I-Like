@@ -80,6 +80,7 @@ def dataCleanAdvanced(df):
 
 if __name__ == '__main__':
     #importing in the csv
+    min_books_read = int(input('min books read: '))
     df_books = pd.read_csv('data/books.csv')
     df_book_tags = pd.read_csv('data/book_tags.csv')
     df_ratings = pd.read_csv('data/ratings.csv')
@@ -95,8 +96,8 @@ if __name__ == '__main__':
     print(df_tags_books['tag_name'].value_counts())
 
     #Creating the first 2 data frames to compare
-    df_fantasy = isolate_tag(df_tags_books, 'fantasy', 4)
-    df_fic = isolate_tag(df_tags_books, 'fiction', 4)
+    df_fantasy = isolate_tag(df_tags_books, 'fantasy', min_books_read)
+    df_fic = isolate_tag(df_tags_books, 'fiction', min_books_read)
 
     #setting up Beta distributions and plots
     fantasy_fic = Beta.Beta(df_fantasy, df_fic, 'user_rating').compile_analysis('Fantasy', 'Fiction', Plot=True)
@@ -104,17 +105,17 @@ if __name__ == '__main__':
     print(fantasy_fic)
 
     #history vs literature
-    df_nfic = isolate_tag(df_tags_books, 'non-fiction', 4)
-    fic_nfic = Beta.Beta(df_fic, df_nfic, 'user_rating').compile_analysis('Fiction','Non-Fiction', Plot=True)
+    df_vamp = isolate_tag(df_tags_books, 'vampires', min_books_read)
+    fic_vamp = Beta.Beta(df_fic, df_vamp, 'user_rating').compile_analysis('Fiction','Vampire', Plot=True)
     plt.show()
-    print(fic_nfic), 
+    print(fic_vamp), 
 
     #science vs relgion
-    df_sci = isolate_tag(df_tags_books, 'science-fiction', 4)
-    df_class = isolate_tag(df_tags_books, 'classics', 4)
-    sci_class = Beta.Beta(df_sci, df_class, 'user_rating').compile_analysis('Science-Fiction','Classics', Plot=True)
+    df_sci = isolate_tag(df_tags_books, 'science-fiction', min_books_read)
+    #df_horr = isolate_tag(df_tags_books, 'fantasy', 4)
+    sci_fant = Beta.Beta(df_sci, df_fantasy, 'user_rating').compile_analysis('Science-Fiction','Fantasy', Plot=True)
     plt.show()
-    print(sci_class)
+    print(sci_fant)
 
     #create and test combinations of top 10 tags
     tag_comb, tag_10 = massTagComb(df_tags_books,10)
