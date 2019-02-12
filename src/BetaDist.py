@@ -18,15 +18,6 @@ class Beta(object):
         self.df2 = df2
         self.tag = tag
     
-    def avg_rating_by_user(self, df, tag):
-        '''
-        INPUT: dataframe, string
-        OUTPUT: dataframe
-        Groups dataframe by user id and averages each product over the given
-        tag
-        '''
-        return df.groupby('user_id').mean()[self.tag].reset_index()
-
     def get_beta_params(self, df, tag):
         '''
         INPUT: dataframe, string
@@ -104,8 +95,8 @@ class Beta(object):
         merges the two dataframes on userid
         '''
         if compile_A == True:
-            df1_m_df2 = self.df1[['user_id','tag_name']].merge(self.df2, left_on='user_id', right_on='user_id')
-            df2_m_df1 = self.df2[['user_id','tag_name']].merge(self.df1, left_on='user_id', right_on='user_id')
+            df1_m_df2 = self.df1[['user_id','user_rating']].merge(self.df2[['user_id','user_rating']], left_on='user_id', right_on='user_id')
+            df2_m_df1 = self.df2[['user_id','user_rating']].merge(self.df1[['user_id','user_rating']], left_on='user_id', right_on='user_id')
             return df1_m_df2, df2_m_df1
         elif compile_A == False:
             return self.df1.merge(self.df2, left_on=leftjoin, right_on=rightjoin)
@@ -117,14 +108,15 @@ class Beta(object):
         Calls above functions and returns results of hypothesis test.
         '''
         df1_m_df2, df2_m_df1 = self.dfMerge()
-
-        df1_avgs = self.avg_rating_by_user(df1_m_df2, self.tag)
-        df2_avgs = self.avg_rating_by_user(df2_m_df1, self.tag)
+        df1_m_df2['ratingDif'] = df1_m_df2['user_rating_x'] - df1_m_df2['user_rating_y']
+        self.tag = self.tag + '_x'
 
         if Plot == True:
-            self.plot_distribution(df1_avgs, df2_avgs, self.tag, df1_name, df2_name)
+            self.plot_distribution(df1_m_df2, df2_m_df1, self.tag, df1_name, df2_name)
 
-        df1_a, df1_b = self.get_beta_params(df1_avgs, self.tag)
-        df2_a, df2_b = self.get_beta_params(df2_avgs, self.tag)
+        df1_a, df1_b = self.get_beta_params(df1_m_df2, self.tag)
+        df2_a, df2_b = self.get_beta_params(df2_m_df1, self.tag)
 
-        return self.beta_test(df1_a, df2_a, df1_b, df2_b)
+        prob = self.beta_test(df1_a, df2_a, df1_b, df2_b)
+        Diff1 = df1_m_df2['ratingDif'].mean()
+        return [prob, Diff1]
