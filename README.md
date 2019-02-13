@@ -70,19 +70,24 @@ To double check the distribution of user raitings I took the difference between 
 
 ### Science-Fiction and Fantasy
 
-I then compared were science and religion.
+I then compared were Science-Fiction and Fantasy, which I though would be very close due to the simularity of the genres.
+
 ![alt text](images/fig_Science-Fiction.png)
-These results suprised me 49%
+
+From this figure, it is easy to see that readers of sci-fi and fantasy tend to rate the two genres very high and they are very likly to rate the other genre as a 5 due to the lack of a right tale in either graph. Numerically I found that model B performed beter only 58% of the time compared to model A and on average there was only a raitng differnce between the genres of 0.21. These elements on top of the visual element shows that the Null can't be rejected and individuals tend to rate sci-fi and fantasy the exact same. 
 
 ### Fiction and Vampire
 
 After seeing the results for fiction and fantasy, I decided to take a look at the genre called Vampire, which due to the vitrial around twilight and its ripoffs I though would produce intresting results, and I was right.
+
 ![alt text](images/fig_Fiction.png)
+
 Acording to my code there is not a single person who has read 4 books of the fiction genre and the vampire genre. I can take this two ways, 1 that people who like either genre avoid the other, but I cannot accept this to be true. the most likley result is that my dataset and data cleaning methods are reducing the total amount of books and people in each genre. For example lets think of the fictional book, <b>Mary Popins and the Vampire Apoclypse</b>. How my code works is that it takes a look at the most used tag for each book and makes that the genre of the book, well people who might have read <b>Mary Popins and the Vampire Apoclypse</b> gave it the tags, fiction, fantasy, vampire, ya, and post-apocolyptic. If fiction was the most used tag my code would result in <b>Mary Popins and the Vampire Apoclypse</b> becoming part of the fiction genre. When I then compare ficiton and vampire, this book only counts as a fiction book and all the readers of this book count as having read a fiction book so if they have only read 2 other fiction books, or no other vampire books, they are not included when I compare the two genres against eachother.
 
 ### Top 10 tags
 
 After having this relisations, I decided to look at how the ten most used tags compare against eachother. In order to acomplish this I seleceted the ten most used tags and then ran the resulting list through the combinations tool to produce all the combinations.
+
 ```python
 def massTagComb(df, num_tag):
         df_user = df[["tag_name"]].sort_values(by=['tag_name'])
@@ -91,6 +96,7 @@ def massTagComb(df, num_tag):
         tag_comb = combinations(tag_10, 2)
         return tag_comb, tag_10.tolist()
 ```
+
 I then ran these combinations through my code and resulted with the following values.
 ## temp head
 |Combinations | Bleed_Over | Avg_Raiting_diff|
@@ -140,6 +146,8 @@ I then ran these combinations through my code and resulted with the following va
 |(classics, childrens)|0.0000|NaN|
 |(classics, science-fiction)|0.4981|-3.916667e-01|
 |(childrens, science-fiction)|0.0000|NaN|
+
+Because the high amount of NaN and zeros I have to come to the conclusion that while this is a large data set, there are some fundemental flaws in it. First of all the data source is a a network for books which is sadley not as popular as movies and video games, this fact then almost self selects the users into being big fans of books alread which baises the results. On top of this, the tag system is user selected which creates a lot of uncertainty about what the genre or catagories for each book are. There are probably high level solutions to this problem such as using multiple nested dictionaries or figuring about a way to catagorise the data into genres. At this moment however I belive that my code is more of a prof of concept for calculating genre bleed over and with minimal editing could be used on differnt data sets such as amazon book sales data.
 
 ## Linear Regresion
 
