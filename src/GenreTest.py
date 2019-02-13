@@ -154,12 +154,13 @@ def Linear_Regression(df, df1, df2, name):
 
 if __name__ == '__main__':
     #settings
-    min_books_read = int(input('min books read: '))
-    plot = input("plot True or False: ")
-    if plot == 'True':
-        plot = True
-    else:
-        plot == False
+    min_books_read = 1
+    plot = False
+    # plot = input("plot True or False: ")
+    # if plot == 'True':
+    #     plot = True
+    # else:
+    #    plot == False
     
     #importing in the csv
     df_books = pd.read_csv('data/books.csv')
@@ -230,16 +231,16 @@ if __name__ == '__main__':
     print(sci_fant)
 
     #create and test combinations of top 10 tags
-    tag_comb, tag_10 = massTagComb(df_tags_books,10)
-    #df_10_comb = massCompare(tag_comb,tag_10)
-    #print(df_10_comb)
+    # tag_comb, tag_10 = massTagComb(df_tags_books,10)
+    # df_10_comb = massCompare(tag_comb,tag_10)
+    # print(df_10_comb)
 
     #linear models
-    Ridge_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy and Fiction')
-    Lasso_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy and Fiction')
-    Linear_Regression(fantasy_fic_df,'Fantasy','Fiction','Fantasy and Fiction')
+    Ridge_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
+    Lasso_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
+    Linear_Regression(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
 
     #building a pivot table
-    Rating_Matrix = ratingMatrix(df_tags_books)
-    Rating_Matrix = Rating_Matrix.values
-    w, v = np.linalg.eig(Rating_Matrix)
+    # Rating_Matrix = ratingMatrix(df_tags_books)
+    # Rating_Matrix = Rating_Matrix.values
+    # w, v = np.linalg.eig(Rating_Matrix)
