@@ -95,7 +95,7 @@ def dataCleanAdvanced(df):
     print(df[pred])
     return clf
 
-def Ridge_model(df):
+def Ridge_model(df, df1,df2, name):
         X = df['user_rating_x'].values.reshape(-1,1)
         y = df['user_rating_y'].values
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
@@ -106,11 +106,15 @@ def Ridge_model(df):
         a = ridge['lambda'][index]
         pred = Ridge(alpha=a).fit(X_train, y_train).predict(X_test)
         print(LR_R.rmsle(y_test, pred))
-        plt.plot(X_test, pred)
         plt.scatter(X_test, y_test)
+        plt.plot(X_test, pred)
+        plt.ylabel(df2)
+        plt.xlabel(df1)
+        plt.title('Ridge Regression for {}'.format(name))
+        plt.savefig('images/{}_ridge_model'.format(name))
         plt.show()
 
-def Lasso_model(df):
+def Lasso_model(df, df1, df2, name):
     X = df['user_rating_x'].values.reshape(-1,1)
     y = df['user_rating_y'].values
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
@@ -123,9 +127,15 @@ def Lasso_model(df):
     print(LR_L.rmsle(y_test, pred))
     plt.plot(X_test, pred)
     plt.scatter(X_test, y_test)
+    plt.scatter(X_test, y_test)
+    plt.plot(X_test, pred)
+    plt.ylabel(df2)
+    plt.xlabel(df1)
+    plt.title('Lasso Regression for {}'.format(name))
+    plt.savefig('images/{}_lasso_model'.format(name))
     plt.show()
 
-def Linear_Regression(df):
+def Linear_Regression(df, df1, df2, name):
     X = df['user_rating_x'].values.reshape(-1,1)
     y = df['user_rating_y'].values
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
@@ -134,6 +144,12 @@ def Linear_Regression(df):
     print(LR.linearReg(X_test,y_test).rmsle(y_test, pred))
     plt.plot(X_test, pred)
     plt.scatter(X_test, y_test)
+    plt.scatter(X_test, y_test)
+    plt.plot(X_test, pred)
+    plt.ylabel(df2)
+    plt.xlabel(df1)
+    plt.title('Linear Regression for {}'.format(name))
+    plt.savefig('images/{}_linear_model'.format(name))
     plt.show()
 
 if __name__ == '__main__':
@@ -167,20 +183,50 @@ if __name__ == '__main__':
 
     #Creating the first 2 data frames to compare
     df_fantasy= isolate_tag(df_tags_books, 'fantasy', min_books_read)
+    fig = plt.figure(figsize=(7,7))
+    df_fantasy['user_rating'].hist(bins=20)
+    plt.title("Fantasy Mean User Ratings")
+    plt.xlabel('mean user ratings')
+    fig.savefig('images/fantasy_hist.png')
+    plt.show()
+
     df_fic = isolate_tag(df_tags_books, 'fiction', min_books_read)
+    fig = plt.figure(figsize=(7,7))
+    df_fic['user_rating'].hist(bins=20)
+    plt.title("Fiction Mean User Ratings")
+    plt.xlabel('mean user ratings')
+    fig.savefig('images/fiction_hist.png')
+    plt.show()
 
     #setting up Beta distributions and plots
     fantasy_fic, fantasy_fic_df = Beta.Beta(df_fantasy, df_fic, 'user_rating').compile_analysis('Fantasy', 'Fiction', Plot=plot)
+    plt.show()
     print(fantasy_fic)
 
     #history vs literature
     df_vamp = isolate_tag(df_tags_books, 'vampires', min_books_read)
+    fig = plt.figure(figsize=(7,7))
+    df_vamp['user_rating'].hist(bins=20)
+    plt.title("Vampire Mean User Ratings")
+    plt.xlabel('mean user ratings')
+    fig.savefig('images/Vampire_hist.png')
+    plt.show()
+    
     fic_vamp, fic_vamp_df = Beta.Beta(df_fic, df_vamp, 'user_rating').compile_analysis('Fiction','Vampire', Plot=plot)
+    plt.show()
     print(fic_vamp), 
 
     #science vs relgion
     df_sci = isolate_tag(df_tags_books, 'science-fiction', min_books_read)
+    fig = plt.figure(figsize=(7,7))
+    df_sci['user_rating'].hist(bins=20)
+    plt.title("Science-Fiction Mean User Ratings")
+    plt.xlabel('mean user ratings')
+    fig.savefig('images/sci-fi_hist.png')
+    plt.show()
+    
     sci_fant, sci_fant_df = Beta.Beta(df_sci, df_fantasy, 'user_rating').compile_analysis('Science-Fiction','Fantasy', Plot=plot)
+    plt.show()
     print(sci_fant)
 
     #create and test combinations of top 10 tags
@@ -189,10 +235,11 @@ if __name__ == '__main__':
     #print(df_10_comb)
 
     #linear models
-    Ridge_model(fantasy_fic_df)
-    Lasso_model(fantasy_fic_df)
-    Linear_Regression(fantasy_fic_df)
+    Ridge_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy and Fiction')
+    Lasso_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy and Fiction')
+    Linear_Regression(fantasy_fic_df,'Fantasy','Fiction','Fantasy and Fiction')
 
     #building a pivot table
     Rating_Matrix = ratingMatrix(df_tags_books)
     Rating_Matrix = Rating_Matrix.values
+    w, v = np.linalg.eig(Rating_Matrix)

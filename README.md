@@ -16,6 +16,7 @@
 
 For this poject I decided to look at book genres and the "bleeding" between genres (the enjoyment of one genre given the enjoyment of another genre). The Goodreads 10k book dataset from kaggle seemed perfect because it countained 10k books, user reviews and user given tags. The data sets was made of four csv files, books, book_tags, ratings, and tags. My end plan is to be able to predict the raitings that someone might give any genre given their enjoyment of one genre. 
 
+# EDA
 My first step was to fiugre out how to put all of the data together so I could search through the data frame. The main problem though is the identifyer I am using are the user generated tags. (tag csv file) When just loading up theses tags, the first thing I noticed was that the majority of the tags are worthless such as to-read, favorite, --31-, and some tags writen in japanese. To deal with this I just did a quick visual search and made a function that removed the most common words I did not care about and would have messed with my analysis.
 ```python
 def dataClean(df):
@@ -31,7 +32,15 @@ After this I needed to find out how group the tags, books, and users so I could 
 
 ![alt text](images/EDA_Bar.png)
 
-After finishing all this up it was off to the races.
+I then looked at the distribution of mean user reviews for the main genres I wanted to look at for this project
+
+![alt text](images/fantasy_hist.png)
+
+![alt text](images/fiction_hist.png)
+
+![alt text](images/Vampire_hist.png)
+
+![alt text](images/sci-fi_hist.png)
 
 ## Baysian A/B testing
 
