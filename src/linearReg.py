@@ -15,9 +15,13 @@ class linearReg(object):
         self.X = X
         self.y = y
         self.scaler = ut.XyScaler()
+    
+    def rmsle(self, actual, predictions):
+        log_diff = np.log(np.abs(predictions)+1) - np.log(np.abs(actual)+1)
+        return np.sqrt(np.mean(log_diff**2))
 
-    def CV_kfold_ttsplit(self, base_estimator, alpha, n_folds = 5, random_seed=154):
-        kf = KFold(n_splits=n_folds, random_state=random_seed, shuffle=False)
+    def CV_kfold_ttsplit(self, base_estimator, alpha, random_seed=154):
+        kf = KFold(n_splits=5, random_state=random_seed, shuffle=False)
         error_lst_test = []
         error_lst_train = []
         #split into test and train
@@ -25,17 +29,13 @@ class linearReg(object):
             X_train_k, X_test_k = self.X[train_index], self.X[test_index]
             y_train_k, y_test_k = self.y[train_index], self.y[test_index]
 
-            # Standardize data,
-            X_train_k, y_train_k = self.scaler.fit(X_train_k, y_train_k).transform(X_train_k, y_train_k)
-            X_test_k, y_test_k = self.scaler.fit(X_test_k, y_test_k).transform(X_test_k, y_test_k)
-
             model = base_estimator(alpha)
             model.fit(X_train_k, y_train_k)
 
             test_predicted = model.predict(X_test_k)
-            error_lst_test.append(rmsle(y_test_k, test_predicted))
+            error_lst_test.append(self.rmsle(y_test_k, test_predicted))
             train_predicted = model.predict(X_train_k)
-            error_lst_train.append(rmsle(y_train_k, train_predicted))
+            error_lst_train.append(self.rmsle(y_train_k, train_predicted))
 
         cv_test_mean = np.mean(error_lst_test)
         cv_train_mean = np.mean(error_lst_train)
@@ -50,15 +50,7 @@ class linearReg(object):
         df = pd.DataFrame(columns = cols)
 
         for a in alpha:
-            df.loc[len(df)] = self.CV_kfold_ttsplit(model_R, k, a)
-        ridge_models = []
-        
-        for a in alpha:
-            self.scaler.fit(self.X, self.y)
-            X_train_std, y_train_std = self.scaler.transform(X, y)
-            model_R = model_R(alpha=a)
-            model_R.fit(X_train_std, y_train_std)
-            ridge_models.append(model_R)
+            df.loc[len(df)] = self.CV_kfold_ttsplit(model_R, a)
         return df
 
     def lasso(self, alpha, k):
@@ -70,12 +62,4 @@ class linearReg(object):
 
         for a in alpha:
             df.loc[len(df)] = self.CV_kfold_ttsplit(model_L, a)
-        lasso_models = []
-        
-        for a in alpha:
-            self.scaler.fit(self.X, self.y)
-            X_train_std, y_train_std = self.scaler.transform(X, y)
-            lasso = Lasso(alpha=a)
-            lasso.fit(X_train_std, y_train_std)
-            lasso_models.append(lasso)
         return df

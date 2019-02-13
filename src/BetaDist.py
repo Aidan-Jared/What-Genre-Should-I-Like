@@ -106,7 +106,7 @@ class Beta(object):
         elif compile_A == False:
             return self.df1.merge(self.df2, left_on=leftjoin, right_on=rightjoin)
     
-    def compile_analysis(self, df1_name='', df2_name='', Plot = False):
+    def compile_analysis(self, df1_name='', df2_name='', Plot = False, dataframe = True):
         '''
         INPUT: dataframe, dataframe, string
         OUTPUT: float
@@ -128,4 +128,7 @@ class Beta(object):
 
         prob = self.beta_test(df1_a, df2_a, df1_b, df2_b)
         Diff1 = df1_m_df2['ratingDif'].mean()
-        return [prob, Diff1]
+        if dataframe == True:
+            return [prob, Diff1], df1_m_df2
+        else:
+            return [prob, Diff1]
