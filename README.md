@@ -29,20 +29,7 @@ def dataClean(df):
 
 After this I needed to find out how group the tags, books, and users so I could select specific genres and mean users reviews. My solution was to join the book_tags, and tag dataframes so that I would have tag names tied with book_ids. I then put this dataframe through my cleaning function and removed all repeate values so that I would only have one instance of every book and the tag that most people games this book. Then end result looked soemthing like this:
 
-| Genre        | Books in Genre           |
-| ------------- |:-------------:|
-|fiction            |      1639|
-|fantasy            |      1104|
-|young-adult        |       695|
-|mystery            |       640|
-|non-fiction        |       597|
-|romance            |       464|
-|historical-fiction |       428|
-|classics           |       419|
-|childrens          |       294|
-|science-fiction    |       269|
-|horror             |       201|
-|graphic-novels     |       180|
+![alt text](images/EDA_Bar.png)
 
 After finishing all this up it was off to the races.
 
@@ -101,50 +88,30 @@ I then ran these combinations through my code and resulted with the following va
 ## temp head
 |Combinations | Bleed_Over | Avg_Raiting_diff|
 | ------------- |:-------------:|:-------------|
-|(fiction, fantasy)|0.4903|1.269258e-02|
 |(fiction, young-adult)|0.0000|NaN|
 |(fiction, mystery)|0.0000|NaN|
-|(fiction, non-fiction)|0.4287|-1.535714e-01|
 |(fiction, romance)|0.0000|NaN|
 |(fiction, historical-fiction)|0.0000|NaN|
-|(fiction, classics)|0.5076|-5.630631e-03
 |(fiction, childrens)|0.0000|NaN|
-|(fiction, science-fiction)|0.4956|4.229421e-17|
 |(fantasy, young-adult)|0.0000|NaN|
-|(fantasy, mystery)|0.0000|NaN|
-|(fantasy, non-fiction)|0.5587|3.174603e-03|
-|(fantasy, romance)|0.0000|NaN|
 |(fantasy, historical-fiction)|0.0000|NaN|
-|(fantasy, classics)|0.3292|-2.366667e-01|
 |(fantasy, childrens)|0.0000|NaN|
-|(fantasy, science-fiction)|0.4114|-2.096693e-01|
 |(young-adult, mystery)|0.0000|NaN|
 |(young-adult, non-fiction)|0.0000|NaN|
-|(young-adult, romance)|0.0000|NaN|
-|(young-adult, historical-fiction)|0.0000|NaN|
-|(young-adult, classics)|0.0000|NaN|
 |(young-adult, childrens)|0.0000|NaN|
 |(young-adult, science-fiction)|0.0000|NaN|
 |(mystery, non-fiction)|0.0000|NaN|
 |(mystery, romance)|0.0000|NaN|
-|(mystery, historical-fiction)|0.0000|NaN|
-|(mystery, classics)|0.0000|NaN|
 |(mystery, childrens)|0.0000|NaN|
 |(mystery, science-fiction)|0.0000|NaN|
 |(non-fiction, romance)|0.0000|NaN|
-|(non-fiction, historical-fiction)|0.0000|NaN|
-|(non-fiction, classics)|0.0000| NaN|
 |(non-fiction, childrens)|0.0000|NaN|
-|(non-fiction, science-fiction)|0.0000|0.000000e+00|
 |(romance, historical-fiction)|0.0000|NaN|
-|(romance, classics)|0.0000|NaN|
-|(romance, childrens)|0.0000|NaN|
 |(romance, science-fiction)|0.0000|NaN|
 |(historical-fiction, classics)|0.0000|NaN|
 |(historical-fiction, childrens)|0.0000|NaN|
 |(historical-fiction, science-fiction)|0.0000|NaN|
 |(classics, childrens)|0.0000|NaN|
-|(classics, science-fiction)|0.4981|-3.916667e-01|
 |(childrens, science-fiction)|0.0000|NaN|
 
 Because the high amount of NaN and zeros I have to come to the conclusion that while this is a large data set, there are some fundemental flaws in it. First of all the data source is a a network for books which is sadley not as popular as movies and video games, this fact then almost self selects the users into being big fans of books alread which baises the results. On top of this, the tag system is user selected which creates a lot of uncertainty about what the genre or catagories for each book are. There are probably high level solutions to this problem such as using multiple nested dictionaries or figuring about a way to catagorise the data into genres. At this moment however I belive that my code is more of a prof of concept for calculating genre bleed over and with minimal editing could be used on differnt data sets such as amazon book sales data.
