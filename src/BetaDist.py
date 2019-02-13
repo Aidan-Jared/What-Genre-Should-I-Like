@@ -29,6 +29,10 @@ class Beta(object):
         df[self.tag] = df[self.tag]/df[self.tag].max()
         mu = np.mean(df.loc[:,self.tag])
         sd = np.std(df.loc[:,self.tag])
+        if sd == 0 or sd == np.nan:
+            alpha = 0
+            beta = 0
+            return(alpha, beta)
         alpha = (((1 - mu )/sd**2) - (1/mu)) * mu**2
         beta = alpha * ((1 / mu) - 1)
         return(alpha, beta)
@@ -116,6 +120,10 @@ class Beta(object):
             self.plot_distribution(df1_m_df2, df2_m_df1, self.tag, df1_name, df2_name)
 
         df1_a, df1_b = self.get_beta_params(df1_m_df2, self.tag)
+        if df1_a == 0 and df1_b == 0:
+            prob = 0
+            Diff1 = 0
+            return [prob, Diff1]
         df2_a, df2_b = self.get_beta_params(df2_m_df1, self.tag)
 
         prob = self.beta_test(df1_a, df2_a, df1_b, df2_b)

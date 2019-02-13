@@ -50,13 +50,14 @@ def isolate_tag(df, tag, books_read):
     return df_new.groupby(['user_id']).mean().reset_index()
 
 def massCompare(tag_comb, tag_10):
-        res = []
+        columns = ['Combinations', 'Bleed_Over', "Avg_Raiting_diff"]
+        df = pd.DataFrame(columns = columns)
         for i in tag_comb:
             df1 = isolate_tag(df_tags_books, i[0], 4)
             df2 = isolate_tag(df_tags_books, i[1], 4)
             tags = Beta.Beta(df1, df2, 'user_rating').compile_analysis(i[0],i[1], Plot=False)
-            res.append(tags)
-        return res
+            df.loc[len(df)] = i, tags[0], tags[1]
+        return df
 
 def massTagComb(df, num_tag):
         df_user = df[["tag_name"]].sort_values(by=['tag_name'])
@@ -120,4 +121,5 @@ if __name__ == '__main__':
 
     #create and test combinations of top 10 tags
     tag_comb, tag_10 = massTagComb(df_tags_books,10)
-    print(massCompare(tag_comb,tag_10))
+    df_10_comb = massCompare(tag_comb,tag_10)
+    print(df_10_comb)
