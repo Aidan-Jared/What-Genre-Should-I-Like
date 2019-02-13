@@ -61,9 +61,8 @@ def ratingMatrix(df):
     #need to change this area
     df_new = df
     df_new = Beta.Beta(df_new, df_ratings).dfMerge('goodreads_book_id', 'book_id', compile_A=False)
-    df_new = df_new[['book_id', 'user_id', 'rating']].groupby(['user_id','book_id']).count()
-    df_new = df_new.reset_index()
-    df_new = df_new.pivot(index='user_id', columns='book_id')['rating']
+    df_new = df_new[['book_id', 'user_id', 'rating']].reset_index()
+    df_new = pd.pivot_table(df_new, values='rating', index=['user_id'], columns=['book_id'], aggfunc=np.sum, fill_value=0)
     return df_new
 
 def massCompare(tag_comb, tag_10):
@@ -130,9 +129,9 @@ def Linear_Regression(df):
     X = df['user_rating_x'].values.reshape(-1,1)
     y = df['user_rating_y'].values
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
-    model = LinearRegression.fit(X_train, y_train)
+    model = LinearRegression().fit(X_train, y_train)
     pred = model.predict(X_test)
-    print(LR_L.rmsle(y_test, pred))
+    print(LR.linearReg(X_test,y_test).rmsle(y_test, pred))
     plt.plot(X_test, pred)
     plt.scatter(X_test, y_test)
     plt.show()
@@ -165,7 +164,6 @@ if __name__ == '__main__':
     bar_df.plot(kind='bar')
     fig.savefig('images/EDA_Bar.png')
     plt.show()
-    #print(ratingMatrix(df_tags_books))
 
     #Creating the first 2 data frames to compare
     df_fantasy= isolate_tag(df_tags_books, 'fantasy', min_books_read)
@@ -194,3 +192,7 @@ if __name__ == '__main__':
     Ridge_model(fantasy_fic_df)
     Lasso_model(fantasy_fic_df)
     Linear_Regression(fantasy_fic_df)
+
+    #building a pivot table
+    Rating_Matrix = ratingMatrix(df_tags_books)
+    Rating_Matrix = Rating_Matrix.values
