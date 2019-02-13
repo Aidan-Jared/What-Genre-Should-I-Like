@@ -4,7 +4,7 @@
 
 - [Project Explanation and Goals](#project-explanation-and-goals)    
 - [Baysian A/B testing](#baysian-ab-testing)        
-    - [Fantasy and Literature](#fantasy-and-literature)        
+    - [Fantasy and Fiction](#fantasy-and-fiction)        
     - [Literature and History](#literature-and-history)        
     - [Science and Religion](#science-and-religion)        
     - [Top 10 tags](#top-10-tags)    
@@ -48,13 +48,25 @@ After finishing all this up it was off to the races.
 
 ## Baysian A/B testing
 
-After cleaning and orginizing my dataset, I decided that the beset way to compare genres would be through Baysian A/B testing because it can show the mean rating that users give to other genres and can give me a numerical values for how much better does one genre fan like another genre.
+After cleaning and orginizing my dataset, I decided that the beset way to compare genres would be through Baysian A/B testing because it can show the mean rating that users give to other genres and can give me a numerical values for how much better does one genre fan like another genre. For these experments my Null is that individuals give the same rating to any genre and my Alt is that they give differnt values.
 
-### Fantasy and Literature
-The first two genres I compared were fantasy and literature.
+### Fantasy and Fiction
+The first two genres I compared were fantasy and fiction being the two most common book types.
+
+```python
+df_fantasy = isolate_tag(df_tags_books, 'fantasy', min_books_read)
+df_fic = isolate_tag(df_tags_books, 'fiction', min_books_read)
+fantasy_fic = Beta.Beta(df_fantasy, df_fic, 'user_rating').compile_analysis('Fantasy', 'Fiction', Plot=True)
+plt.show()
+print('A/B test, Difference in Mean Raiting', fantasy_fic)
+'A/B test, Difference in Mean Raiting' [0.5153, -0.012692577030812365]
+```
+
 ![alt text](images/fig_Fantasy.png)
 
-Fantasy tended to only raited literture higher than literature raited fantasy 48% of the time which combined with the graph shows to me that if you are a fan of fantasy or literature you are very likely to enjoy the other genre.
+From running the A/B test and the Beta function produced I found that acording to the data there is almost no difference in the ratings that fans of fantasy give to fiction and vice-versa. I ended up getting that model B was better than model A about 50% of the time which once again shows no difference between the two models which makes it so I can't reject the null. This does make some sense because these two genres tend to have a lot of overlap in intrests and some individuals might consider a fantasy novel to be fiction which would definetly skew the data one way or another.
+
+To double check the distribution of user raitings I took the difference between the average fantasy rating and the average fiction and found that on average, there is only a -.01 point difference between how individuals rate fantasy and fiction. To me this shows that if you like fiction or fantasy, you will mostlikly like the other genre equally as much.
 
 ### Literature and History
 

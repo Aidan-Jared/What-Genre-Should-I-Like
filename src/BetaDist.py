@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from typing import List, Optional
+plt.style.use('ggplot')
 
 class Beta(object):
     '''
@@ -56,7 +57,7 @@ class Beta(object):
         df2_a, df2_b = self.get_beta_params(df2_avg, self.tag)
 
         #setting up plot figure
-        fig = plt.figure(figsize=(8,8))
+        fig = plt.figure(figsize=(9,9))
         gs = gridspec.GridSpec(2,2)
         ax = fig.add_subplot(gs[:,0])
         ax1 = fig.add_subplot(gs[0,1])

@@ -9,6 +9,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import utils as ut
 
+
 class linearReg(object):
     def __init__(self, X, y):
         self.X = X
