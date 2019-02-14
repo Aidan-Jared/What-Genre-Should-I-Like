@@ -155,7 +155,7 @@ def Linear_Regression(df, df1, df2, name):
 if __name__ == '__main__':
     #settings
     min_books_read = 1
-    plot = False
+    plot = True
     # plot = input("plot True or False: ")
     # if plot == 'True':
     #     plot = True
