@@ -79,14 +79,14 @@ class Beta(object):
 
         
         #formating
-        ax.set_ylabel('P(user_rating) = x)')
-        ax.set_xlabel('x')
+        ax.set_ylabel('Rating Frequency')
+        ax.set_xlabel('User Rating')
         ax.set_title('{0} avg rating vs {1} avg rating Beta Function'.format(df1_name, df2_name), fontsize=12)
-        ax1.set_ylabel("P(user_rating) = x")
-        ax1.set_xlabel("x")
+        ax1.set_ylabel("Rating Count")
+        ax1.set_xlabel("User Rating")
         ax1.set_title("{0} readers ratings of {1}".format(df1_name, df2_name), fontsize=12)
-        ax2.set_ylabel("P(user_rating) = x")
-        ax2.set_xlabel("x")
+        ax2.set_ylabel("Rating Count")
+        ax2.set_xlabel("User Rating")
         ax2.set_title("{0} readers ratings of {1}".format(df2_name, df1_name), fontsize=12)
         ax1.legend()
         ax2.legend()
