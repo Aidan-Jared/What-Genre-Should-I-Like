@@ -27,7 +27,7 @@ def dataClean(df):
 
 def isolate_tag(df, tag, books_read):
     '''
-    input: dataframe, string, list, int
+    input: dataframe, string int
     output: dataframe
     selects only the books from the tag and users if they read more than the min books_read
     '''
@@ -57,6 +57,13 @@ def ratingMatrix(df):
     return df_new
 
 def massCompare(tag_comb, tag_10):
+        '''
+        Input: combination object, list
+        output: dataframe
+        takes in combinations and list of combination strings
+        and outputs a dataframe giving the bleed over and mean diff
+        from all the combinations
+        '''
         columns = ['Combinations', 'Bleed_Over', "Avg_Raiting_diff"]
         df = pd.DataFrame(columns = columns)
         for i in tag_comb:
@@ -67,13 +74,22 @@ def massCompare(tag_comb, tag_10):
         return df
 
 def massTagComb(df, num_tag):
+        '''
+        Input: Dataframe, int
+        output: combination object, list
+        takes in a dataframe and outputs all the combinations of the dataframe
+        that you are intrested in and a list of what is being made into a combination
+        '''
         df_user = df[["tag_name"]].sort_values(by=['tag_name'])
         tag_10 = df_user['tag_name'].value_counts().reset_index()
         tag_10 = tag_10.iloc[:num_tag,0]
         tag_comb = combinations(tag_10, 2)
         return tag_comb, tag_10.tolist()
 
-def catagories(df):
+def catagories(df,y):
+        '''
+        please ignore for the time
+        '''
         clf = Pipeline([
         ('vect', CountVectorizer()),
         ('tfidf', TfidfTransformer()),
@@ -82,6 +98,13 @@ def catagories(df):
         clf.fit(df, y)
 
 def Ridge_model(df, df1,df2, name):
+        '''
+        Input: dataframe, string, string, string
+        output: plot, numpy array, float
+        Runs through multiple alphas through the k-folding and makes a ridge model
+        baised on the lowest RMSLE value and makes a plot bassed on the data while
+        returning the coeficents and lambda value used
+        '''
         X = df['user_rating_x'].values.reshape(-1,1)
         y = df['user_rating_y'].values
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
@@ -90,7 +113,9 @@ def Ridge_model(df, df1,df2, name):
         ridge = LR_R.ridge(alpha,5)
         index = ridge['CVtest_mean_RMSLE'].idxmin()
         a = ridge['lambda'][index]
-        pred = Ridge(alpha=a).fit(X_train, y_train).predict(X_test)
+        model_R = Ridge(alpha=a).fit(X_train, y_train)
+        pred = model_R.predict(X_test)
+        coeff = model_R.coef_
         print(LR_R.rmsle(y_test, pred))
         plt.scatter(X_test * 5, y_test)
         plt.plot(X_test * 4, pred)
@@ -99,40 +124,59 @@ def Ridge_model(df, df1,df2, name):
         plt.title('Ridge Regression for {}'.format(name))
         plt.savefig('images/{}_ridge_model'.format(name))
         plt.show()
+        return coeff, a
 
 def Lasso_model(df, df1, df2, name):
-    X = df['user_rating_x'].values.reshape(-1,1)
-    y = df['user_rating_y'].values
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
-    LR_L = LR.linearReg(X_train, y_train)
-    alpha = [.00001,.0001,.001,.01,.1,1,10,100]
-    lasso = LR_L.lasso(alpha,5)
-    index = lasso['CVtest_mean_RMSLE'].idxmin()
-    a = lasso['lambda'][index]
-    pred = Lasso(alpha=a).fit(X_train, y_train).predict(X_test)
-    print(LR_L.rmsle(y_test, pred))
-    plt.plot(X_test * 5, pred)
-    plt.scatter(X_test * 5, y_test)
-    plt.ylabel(df2)
-    plt.xlabel(df1)
-    plt.title('Lasso Regression for {}'.format(name))
-    plt.savefig('images/{}_lasso_model'.format(name))
-    plt.show()
+        '''
+        Input: dataframe, string, string, string
+        output: plot, numpy array, float
+        Runs through multiple alphas through the k-folding and makes a lasso model
+        baised on the lowest RMSLE value and makes a plot bassed on the data while
+        returning the coeficents and lambda value used
+        '''
+        X = df['user_rating_x'].values.reshape(-1,1)
+        y = df['user_rating_y'].values
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
+        LR_L = LR.linearReg(X_train, y_train)
+        alpha = [.00001,.0001,.001,.01,.1,1,10,100]
+        lasso = LR_L.lasso(alpha,5)
+        index = lasso['CVtest_mean_RMSLE'].idxmin()
+        a = lasso['lambda'][index]
+        model_L = Lasso(alpha=a).fit(X_train, y_train) 
+        pred = model_L.predict(X_test)
+        coeff = model_L.coef_
+        print(LR_L.rmsle(y_test, pred))
+        plt.plot(X_test * 5, pred)
+        plt.scatter(X_test * 5, y_test)
+        plt.ylabel(df2)
+        plt.xlabel(df1)
+        plt.title('Lasso Regression for {}'.format(name))
+        plt.savefig('images/{}_lasso_model'.format(name))
+        plt.show()
+        return coeff, a
 
 def Linear_Regression(df, df1, df2, name):
-    X = df['user_rating_x'].values.reshape(-1,1)
-    y = df['user_rating_y'].values
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
-    model = LinearRegression().fit(X_train, y_train)
-    pred = model.predict(X_test)
-    print(LR.linearReg(X_test,y_test).rmsle(y_test, pred))
-    plt.scatter(X_test * 5, y_test)
-    plt.plot(X_test * 5, pred)
-    plt.ylabel(df2)
-    plt.xlabel(df1)
-    plt.title('Linear Regression for {}'.format(name))
-    plt.savefig('images/{}_linear_model'.format(name))
-    plt.show()
+        '''
+        Input: dataframe, string, string, string
+        output: plot, numpy array
+        makes a linear regression model given the inputs and returns
+        the coefficents founds
+        '''
+        X = df['user_rating_x'].values.reshape(-1,1)
+        y = df['user_rating_y'].values
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.33, random_state=10)
+        model = LinearRegression().fit(X_train, y_train)
+        pred = model.predict(X_test)
+        coeff = model.coef_
+        print(LR.linearReg(X_test,y_test).rmsle(y_test, pred))
+        plt.scatter(X_test * 5, y_test)
+        plt.plot(X_test * 5, pred)
+        plt.ylabel(df2)
+        plt.xlabel(df1)
+        plt.title('Linear Regression for {}'.format(name))
+        plt.savefig('images/{}_linear_model'.format(name))
+        plt.show()
+        return coeff
 
 if __name__ == '__main__':
     #settings
@@ -217,10 +261,17 @@ if __name__ == '__main__':
     # print(df_10_comb)
 
     #linear models
-    Ridge_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
-    Lasso_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
-    Linear_Regression(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
-
+    coeffR, a = Ridge_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
+    print("Ridge Coeff: ", coeffR)
+    print("Ridge lambda: ", a)
+    
+    coeffL, a = Lasso_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
+    print("Lasso Coeff: ", coeffL)
+    print("Lasso lambda: ", a)
+    
+    coeffLR = Linear_Regression(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
+    print("LR Coeff: ", coeffL)
+    
     #building a pivot table
     Rating_Matrix = ratingMatrix(df_tags_books)
     #data = Dataset.

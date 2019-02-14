@@ -1,4 +1,4 @@
-# What Should I Read
+# What Genre Should I Like
 
 ![alt text](images/Books.jpg)
 
@@ -152,7 +152,7 @@ I developed a class that could take in a dataframe and make a very simple model 
 
 ![alt text](images/Fantasy_and_Fiction_linear_model.png)
 
-What I found is that because these models only have one feature, the RMLSE produced by Linear Regression, Lasso, and Ridge were all equal at <b>0.1942</b>. This means that in this case all of the models perform just about the same.
+What I found is that because these models only have one feature, the RMLSE produced by Linear Regression, Lasso, and Ridge were all equal at <b>0.1942</b> and the coeffificent that all the models produced was <b>1.328</b> and the lambda found for both the Ridge and Lasso was <b>1e-5</b>. This means that in this case all of the models perform just about the same.
 
 ## Future Directions
 
