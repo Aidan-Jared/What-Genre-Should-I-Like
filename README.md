@@ -1,4 +1,6 @@
-# Galvanize Capstone 1
+# What Should I Read
+
+![alt text](images/Books.jpg)
 
 ## Table of Contents
 
@@ -9,13 +11,13 @@
     - [Science-Fiction and Fantasy](#science-fiction-and-fantasy)        
     - [Fiction and Vampire](#fiction-and-vampire)        
     - [Top 10 tags](#top-10-tags)    
-- [Linear Models](#linear-models)        
+- [Linear Models](#linear-models)
+- [Future Directions](#future-directions)
+- [Acknowledgments](#acknowledgments)        
 
 ## Project Explanation and Goals
 
-For this poject I decided to look at book genres and the "bleeding" between genres (the enjoyment of one genre given the enjoyment of another genre). The Goodreads 10k book dataset from kaggle seemed perfect because it countained 10 thousand books, user reviews and user given tags. The data sets was made of four csv files, books, book_tags, ratings, and tags. My end plan is to be able to predict the raitings that someone might give any genre given their enjoyment of one genre. 
-
-![alt text](images/Books.jpg)
+For this poject I decided to look at book genres and the "bleeding" between genres (the enjoyment of one genre given the enjoyment of another genre). The Goodreads 10k book dataset from kaggle seemed perfect because it countained 10 thousand books, user reviews and user given tags. The data sets was made of four csv files, books, book_tags, ratings, and tags. My end plan is to be able show an individuals intrest in one genre given their intrest in any other genre.
 
 ## EDA
 
@@ -45,11 +47,11 @@ Because I am looking at the mean ratings given by each user you can deffinetly h
 
 ## Baysian A/B testing
 
-After cleaning and orginizing my dataset, I decided that the beset way to compare genres would be through Baysian A/B testing because it can show the mean rating that users give to other genres and can give me a numerical values for how much better does one genre fan like another genre. For these experments my Null is that individuals give the same rating to any genre and my Alt is that they give differnt values.
+After cleaning and orginizing my dataset, I decided that the best way to compare genres would be through Baysian A/B testing because it can show the mean rating that users give to other genres and can give me a numerical values for how much better does one genre reader like another genre. For these experments my Null is that individuals give the same rating to the two genres (mean1 = mean2) and my Alt is that they give differnt values (mean1 != mean2).
 
 ### Fantasy and Fiction
 
-The first two genres I compared were fantasy and fiction being the two most common book types.
+The first two genres I compared were fantasy and fiction being the two most common book types. The following is the code that I used to do my calculations for all of the following genres.
 
 ```python
 df_fantasy = isolate_tag(df_tags_books, 'fantasy', min_books_read)
@@ -62,9 +64,9 @@ print('A/B test, Difference in Mean Raiting', fantasy_fic)
 
 ![alt text](images/fig_Fantasy.png)
 
-From running the A/B test and the Beta function produced I found that acording to the data there is almost no difference in the ratings that fans of fantasy give to fiction and vice-versa. I ended up getting that model B was better than model A about <b>50%</b> of the time which once again shows no difference between the two models which makes it so I can't reject the null. This does make some sense because these two genres tend to have a lot of overlap in intrests and some individuals might consider a fantasy novel to be fiction which would definetly skew the data one way or another.
+From running the A/B test and the Beta function produced I found that acording to the data there is almost no difference in the ratings that fans of fantasy give to fiction and vice-versa. The lack of the tale of the fantasy plot I ended up getting that model B was better than model A about <b>50%</b> of the time which once again shows no difference between the two models which makes it so I can't reject the null. This does make some sense because these two genres tend to have a lot of overlap in intrests and some individuals might consider a fantasy novel to be fiction which would definetly skew the data one way or another.
 
-To double check the distribution of user raitings I took the difference between the average fantasy rating and the average fiction and found that on average, there is only a <b>-.01</b> difference between how individuals rate fantasy and fiction. To me this shows that if you like fiction or fantasy, you will mostlikly like the other genre equally as much.
+To double check the distribution of user raitings I took the difference between the average fantasy rating and the average fiction and found that on average, there is only a <b>-.003</b> difference between how individuals rate fantasy and fiction. To me this shows that if you like fiction or fantasy, you will mostlikly like the other genre equally as much.
 
 ### Science-Fiction and Fantasy
 
@@ -72,7 +74,7 @@ I then compared were Science-Fiction and Fantasy, which I though would be very c
 
 ![alt text](images/fig_Science-Fiction.png)
 
-From this figure, it is easy to see that readers of sci-fi and fantasy tend to rate the two genres very high and they are very likly to rate the other genre as a 5 due to the lack of a right tale in either graph. Numerically I found that model B performed beter only <b>58%</b> of the time compared to model A and on average there was only a raitng differnce between the genres of <b>0.21</b>. These elements on top of the visual element shows that the Null can't be rejected and individuals tend to rate sci-fi and fantasy the exact same. 
+From this figure, it is easy to see that readers of sci-fi and fantasy tend to rate the two genres very high and they are very likly to rate the other genre as a 5 due to the lack of a right tale in either graph. Numerically I found that model B performed beter only <b>54%</b> of the time compared to model A and on average there was only a raitng differnce between the genres of <b>0.13</b>. These elements on top of the visual element shows that the Null can't be rejected and individuals tend to rate sci-fi and fantasy the exact same. 
 
 ### Fiction and Vampire
 
@@ -151,3 +153,13 @@ I developed a class that could take in a dataframe and make a very simple model 
 ![alt text](images/Fantasy_and_Fiction_linear_model.png)
 
 What I found is that because these models only have one feature, the RMLSE produced by Linear Regression, Lasso, and Ridge were all equal at <b>0.1942</b>. This means that in this case all of the models perform just about the same.
+
+## Future Directions
+
+I hope to develope a recomender system that can recomend books in different genres bassed off of these concepts and maybe even a classifier in order to more accuretly segment up the book population.
+
+## Acknowledgments
+
+- <a href="https://www.kaggle.com/zygmunt/goodbooks-10k#book_tags.csv">Kaggle</a> for the data set
+- <a href="https://github.com/Milliemonster/Amazon_reviews_analysis">Millie Smith</a> for the base code to make the Beta Plots
+- The Galvanize Instrutor Team for help and advice with writing the code

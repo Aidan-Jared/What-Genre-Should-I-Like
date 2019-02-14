@@ -14,15 +14,6 @@ from sklearn.linear_model import Lasso, Ridge, LinearRegression
 import utils as ut
 plt.style.use('ggplot')
 
-def langSelect(df, lang):
-    '''
-    input: dataframe, string
-    output: dataframe
-    takes in a dataframe and removes all langs except for the one selected
-    '''
-    mask = df['language_code'] == lang
-    return df[mask]
-
 def dataClean(df):
     '''
     input: dataframe
@@ -62,7 +53,7 @@ def ratingMatrix(df):
     df_new = df
     df_new = Beta.Beta(df_new, df_ratings).dfMerge('goodreads_book_id', 'book_id', compile_A=False)
     df_new = df_new[['book_id', 'user_id', 'rating']].reset_index()
-    df_new = pd.pivot_table(df_new, values='rating', index=['user_id'], columns=['book_id'], aggfunc=np.sum, fill_value=0)
+    #df_new = pd.pivot_table(df_new, values='rating', index=['user_id'], columns=['book_id'], aggfunc=np.sum, fill_value=0)
     return df_new
 
 def massCompare(tag_comb, tag_10):
@@ -82,18 +73,13 @@ def massTagComb(df, num_tag):
         tag_comb = combinations(tag_10, 2)
         return tag_comb, tag_10.tolist()
 
-def dataCleanAdvanced(df):
-    count_vect = CountVectorizer()
-    tfidf_transformer = TfidfTransformer()
-    X_train_counts = count_vect.fit_transform(df)
-    X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
-    clf = MultinomialNB().fit(X_train_tfidf, df)
-    doc_new = 'fantasy'
-    X_new_count = count_vect.transform(doc_new)
-    X_new_tfidf = tfidf_transformer.transform(X_new_count)
-    pred = clf.predict(X_new_tfidf)
-    print(df[pred])
-    return clf
+def catagories(df):
+        clf = Pipeline([
+        ('vect', CountVectorizer()),
+        ('tfidf', TfidfTransformer()),
+        ('clf', MultinomialNB()),
+        ])
+        clf.fit(df, y)
 
 def Ridge_model(df, df1,df2, name):
         X = df['user_rating_x'].values.reshape(-1,1)
@@ -168,13 +154,12 @@ if __name__ == '__main__':
     df_ratings = pd.read_csv('data/ratings.csv')
     df_tags = pd.read_csv('data/tags.csv')
 
-    #selecting only the books with the eng lang code
-    df_books = langSelect(df_books, 'eng')
-
     #merging dataframes
     df_tags_books = Beta.Beta(df_book_tags, df_tags).dfMerge('tag_id', 'tag_id', compile_A=False)
     df_tags_books = dataClean(df_tags_books)
     df_tags_books = df_tags_books.sort_values('count', ascending=False).drop_duplicates(['goodreads_book_id'])
+    
+    #Visual EDA of tags
     bar_df = df_tags_books['tag_name'].value_counts()
     bar_df = bar_df.iloc[:50]
     fig = plt.figure(figsize=(8,8))
@@ -241,6 +226,5 @@ if __name__ == '__main__':
     Linear_Regression(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
 
     #building a pivot table
-    # Rating_Matrix = ratingMatrix(df_tags_books)
-    # Rating_Matrix = Rating_Matrix.values
-    # w, v = np.linalg.eig(Rating_Matrix)
+    Rating_Matrix = ratingMatrix(df_tags_books)
+    #data = Dataset.
