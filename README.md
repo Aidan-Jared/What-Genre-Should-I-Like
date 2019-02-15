@@ -44,9 +44,11 @@ But that is unreadable so here is what the first 50 tags look like:
 <sub><sub>much better</sub></sub>
 
 I then wanted to look at the distribution of mean user reviews for the main genres I wanted to look at for this project. But my original idea of only considering people who have read more than 4 books in the genre fell apart when I was looking the histograms I was producing and I realized that for some genres the max amount of books read by anyone was just one, so I decided to include everyone who has ever read and rated a book in each genre.
-|Fantasy|Fiction|Vampire|Sci-fi|
-| ------------- |:-------------:|:-------------:|:-------------|
-|![alt text](images/fantasy_hist.png) |![alt text](images/fiction_hist.png) |![alt text](images/Vampire_hist.png) |![alt text](images/sci-fi_hist.png)|
+
+![alt text](images/fantasy_hist.png) 
+![alt text](images/fiction_hist.png) 
+![alt text](images/Vampire_hist.png) 
+![alt text](images/sci-fi_hist.png)
 
 Because I am looking at the mean ratings given by each user you can definitely how many people have only read a single book in each genre especially in the Vampire genre.
 
