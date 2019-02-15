@@ -36,7 +36,7 @@ def dataClean(df):
 
 After this, I needed to find out how to group the tags, books, and users so I could select specific genres and mean users reviews. My solution was to join the book_tags, and tag data frames so that I would have tag names tied with book_ids. I then put this data frame through my cleaning function and removed all repeated values so that I would only have one instance of every book and the tag that most people game this book. Then end result looked something like this:
 
-![alt text](images/Bar_Joke.png)
+![alt text](images/Bar_joke.png)
 
 But that is unreadable so here is what the first 50 tags look like:
 
