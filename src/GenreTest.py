@@ -201,10 +201,10 @@ if __name__ == '__main__':
     
     #Visual EDA of tags
     bar_df = df_tags_books['tag_name'].value_counts()
-    bar_df = bar_df.iloc[:50]
-    fig = plt.figure(figsize=(8,8))
+    #bar_df = bar_df.iloc[:50]
+    fig = plt.figure(figsize=(5,5))
     bar_df.plot(kind='bar')
-    fig.savefig('images/EDA_Bar.png')
+    #fig.savefig('images/EDA_Bar.png')
     plt.show()
 
     #Creating the first 2 data frames to compare

@@ -36,7 +36,12 @@ def dataClean(df):
 
 After this, I needed to find out how to group the tags, books, and users so I could select specific genres and mean users reviews. My solution was to join the book_tags, and tag data frames so that I would have tag names tied with book_ids. I then put this data frame through my cleaning function and removed all repeated values so that I would only have one instance of every book and the tag that most people game this book. Then end result looked something like this:
 
+![alt text](images/Bar_Joke.png)
+
+But that is unreadable so here is what the first 50 tags look like:
+
 ![alt text](images/EDA_Bar.png)
+<sub><sub>much better</sub></sub>
 
 I then wanted to look at the distribution of mean user reviews for the main genres I wanted to look at for this project. But my original idea of only considering people who have read more than 4 books in the genre fell apart when I was looking the histograms I was producing and I realized that for some genres the max amount of books read by anyone was just one, so I decided to include everyone who has ever read and rated a book in each genre.
 
