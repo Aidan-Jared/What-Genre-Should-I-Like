@@ -48,7 +48,7 @@ Because I am looking at the mean ratings given by each user you can definitely h
 
 ## Bayesian A/B testing
 
-After cleaning and organizing my dataset, I decided that the best way to compare genres would be through Bayesian A/B testing because it can show the mean rating that users give to other genres and can give me a numerical value for how much better does one genre reader like another genre. For these experiments, my Null is that individuals give the same rating to the two genres (mean1 = mean2) and my Alt is that they give different values (mean1 != mean2).
+After cleaning and organizing my dataset, I decided that the best way to compare genres would be through Bayesian A/B testing because it can show the mean rating that users give to other genres and can give me a numerical value for how much better does one genre reader like another genre. For these experiments, my Null is that individuals give the same rating to the two genres (mean1 = mean2) and my Alt is that they give different values (mean1 != mean2). In order to run these calculations I developed a <a href = https://github.com/Aidan-Jared/What-Genre-Should-I-Like/blob/master/src/BetaDist.py>class</a> to do all the calculation I need to do
 
 ### Fantasy and Fiction
 
@@ -122,7 +122,7 @@ Because the high amount of NaN and zeros I have to come to the conclusion that w
 ## Linear Models
 
 After working on the A/B testing, I decided to try to create different Linear models for the data. After considering how to structure the X and y I had the sad realization that 1) the perfect model for all genres would be incredibly computationally intensive with <b>295</b> models and <b>294</b> features each and 2) that with my data cleaning I cannot combine two genres to predicted the third genre due to the sparsity of the data that I am dealing with.
-Because of this, I decided to make my linear models proof of concept in order to show what could be done given a better data set.
+Because of this, I decided to make my linear models proof of concept in order to show what could be done given a better data set. I developed another <a href=https://github.com/Aidan-Jared/What-Genre-Should-I-Like/blob/master/src/linearReg.py>class</a> inorder to quickly access the code to create and test the linear models.
 
 ```python
 def Ridge_model(df, df1,df2, name):

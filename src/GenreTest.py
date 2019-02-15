@@ -256,9 +256,9 @@ if __name__ == '__main__':
     print(sci_fant)
 
     #create and test combinations of top 10 tags
-    # tag_comb, tag_10 = massTagComb(df_tags_books,10)
-    # df_10_comb = massCompare(tag_comb,tag_10)
-    # print(df_10_comb)
+    tag_comb, tag_10 = massTagComb(df_tags_books,10)
+    df_10_comb = massCompare(tag_comb,tag_10)
+    print(df_10_comb)
 
     #linear models
     coeffR, a = Ridge_model(fantasy_fic_df,'Fantasy','Fiction','Fantasy_and_Fiction')
