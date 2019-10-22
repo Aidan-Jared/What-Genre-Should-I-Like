@@ -13,7 +13,6 @@
     - [Fiction and Vampire](#fiction-and-vampire)
     - [Top 10 tags](#top-10-tags)
 - [Linear Models](#linear-models)
-- [Future Directions](#future-directions)
 - [Acknowledgments](#acknowledgments)
 
 ## Project Explanation and Goals
@@ -158,10 +157,6 @@ I developed a class that could take in a data frame and make a very simple model
 ![alt text](images/Fantasy_and_Fiction_linear_model.png)
 
 What I found is that because these models only have one feature, the RMLSE produced by Linear Regression, Lasso, and Ridge were all equal at <b>0.1942</b> and the coefficient that all the models produced was <b>1.328</b> and the lambda found for both the Ridge and Lasso was <b>1e-5</b>. This means that in this case all of the models perform just about the same.
-
-## Future Directions
-
-I hope to develop a recommender system that can recommend books in different genres based off of these concepts and maybe even a classifier in order to more accurately segment up to the book population.
 
 ## Acknowledgments
 
